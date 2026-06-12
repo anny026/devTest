@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  java-app:
+    build:
+      context: ./app1-java
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+
+  python-app:
+    build:
+      context: ./app2-python
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
