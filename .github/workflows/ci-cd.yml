@@ -68,32 +68,34 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }} # Этот секрет GitHub создает САМ автоматически, настраивать не нужно
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      # Извлекаем метаданные для Docker образов
+      # Извлекаем метаданные для Docker образов (ИСПРАВЛЕНО на REPO_LOWER)
       - name: Extract Metadata for Java App
         id: meta-java
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/${{ github.repository }}/java-app
+          images: ghcr.io/${{ env.REPO_LOWER }}/java-app
 
+      # Извлекаем метаданные для Docker образов (ИСПРАВЛЕНО на REPO_LOWER)
       - name: Extract Metadata for Python App
         id: meta-python
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/${{ github.repository }}/python-app
+          images: ghcr.io/${{ env.REPO_LOWER }}/python-app
 
-      # Сборка и отправка образов
+      # Сборка и отправка образов Java (ИСПРАВЛЕНО на REPO_LOWER в ручном теге)
       - name: Build and Push Java App
         uses: docker/build-push-action@v5
         with:
           context: ./app1-java
           push: true
-          tags: ${{ steps.meta-java.outputs.tags }}, ghcr.io/${{ github.repository }}/java-app:latest
+          tags: ${{ steps.meta-java.outputs.tags }}, ghcr.io/${{ env.REPO_LOWER }}/java-app:latest
 
+      # Сборка и отправка образов Python (ИСПРАВЛЕНО на REPO_LOWER в ручном теге)
       - name: Build and Push Python App
         uses: docker/build-push-action@v5
         with:
           context: ./app2-python
           push: true
-          tags: ${{ steps.meta-python.outputs.tags }}, ghcr.io/${{ github.repository }}/python-app:latest
+          tags: ${{ steps.meta-python.outputs.tags }}, ghcr.io/${{ env.REPO_LOWER }}/python-app:latest
